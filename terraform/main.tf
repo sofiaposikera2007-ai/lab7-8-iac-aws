@@ -42,7 +42,7 @@ resource "aws_security_group" "web_app" {
 }
 
 resource "aws_instance" "webapp_instance" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = "ami-001eb3af7a48c0947"
   instance_type = "t2.micro"
   security_groups= ["web_app"]
   tags = {
