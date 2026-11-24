@@ -93,6 +93,10 @@ jobs:
         run: terraform init
         working-directory: terraform
 
+      - name: Import existing Lightsail Container Service
+        run: terraform import aws_lightsail_container_service.flask_application flask-app
+        working-directory: terraform
+        
       - name: Terraform Plan
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
