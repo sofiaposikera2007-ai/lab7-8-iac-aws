@@ -91,18 +91,17 @@ jobs:
         run: terraform init
         working-directory: terraform
 
+      
       - name: Import existing Lightsail Container Service
         working-directory: terraform
-        env:
-          REPOSITORY_URI: ${{ secrets.REPOSITORY_URI }}
         run: |
-          if terraform state show -var="REPOSITORY_URI=$REPOSITORY_URI" aws_lightsail_container_service.flask_application >/dev/null 2>&1; then
+          if terraform state list | grep -q '^aws_lightsail_container_service.flask_application$'; then
             echo "Lightsail service is already in Terraform state."
           else
-            terraform import -var="REPOSITORY_URI=$REPOSITORY_URI" aws_lightsail_container_service.flask_application flask-app
+            terraform import -var="REPOSITORY_URI=${{ secrets.REPOSITORY_URI }}" aws_lightsail_container_service.flask_application flask-app
           fi
-        
-        
+
+              
       - name: Terraform Plan
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
