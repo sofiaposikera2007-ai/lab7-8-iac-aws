@@ -57,18 +57,16 @@ jobs:
           aws sts get-caller-identity
           echo "AWS region: $AWS_REGION"
           
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build and push the tagged docker image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.REPOSITORY_NAME }}
-          IMAGE_TAG: latest
+      
+      - name: Login to Amazon ECR Public
         run: |
-          docker build --provenance=false --sbom=false -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+
+      - name: Build and push the tagged docker image to Amazon ECR Public
+        run: |
+          docker build --provenance=false --sbom=false -t public.ecr.aws/l9n8k4h1/flask_app_repository1:latest .
+          docker push public.ecr.aws/l9n8k4h1/flask_app_repository1:latest
+
 
       - name: Setup Terraform
         env:
