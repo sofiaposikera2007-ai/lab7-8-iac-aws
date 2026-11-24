@@ -100,7 +100,7 @@ jobs:
           else
             terraform import aws_lightsail_container_service.flask_application flask-app
            fi
-          working-directory: terraform
+        working-directory: terraform
         
       - name: Terraform Plan
         env:
