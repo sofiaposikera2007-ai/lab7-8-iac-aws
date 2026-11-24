@@ -42,13 +42,13 @@ resource "aws_lightsail_container_service" "flask_application" {
 resource "aws_lightsail_container_service_deployment_version" "flask_app_deployment" {
   container {
   container_name = "flask-application"
-  image = "${var.REPOSITORY_URI}:nginx-test"
-  ports = { 80 = "HTTP" }
+  image = "${var.REPOSITORY_URI}:latest"
+  ports = { 8080 = "HTTP" }
 }
 
 public_endpoint {
   container_name = "flask-application"
-  container_port = 80
+  container_port = 8080
 
     health_check {
       healthy_threshold   = 2
